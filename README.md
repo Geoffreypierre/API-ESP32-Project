@@ -29,5 +29,5 @@ Aucune installation manuelle supplémentaire n’est normalement requise.
 ## 📦 Cloner le dépôt
 
 ```bash
-git clone https://github.com/username/nom-du-projet.git
-cd nom-du-projet
+git clone https://github.com/username/nom-du-projet.git](https://github.com/Geoffreypierre/API-ESP32-Project.git
+cd API-ESP32-Project
