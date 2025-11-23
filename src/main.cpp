@@ -6,8 +6,8 @@
 #include "led_controller.h"
 #include "api_handlers.h"
 
-const char *WIFI_SSID = "**********";
-const char *WIFI_PASSWORD = "**********";
+const char *WIFI_SSID = "Livebox-74F0";
+const char *WIFI_PASSWORD = "Aaqy2gtC9AivP2uGgC";
 
 WebServer server(SERVER_PORT);
 

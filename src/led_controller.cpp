@@ -44,9 +44,9 @@ void LEDController::setBlue()
 
 void LEDController::off()
 {
-    digitalWrite(Pins::RGB_RED, LOW);
-    digitalWrite(Pins::RGB_GREEN, LOW);
-    digitalWrite(Pins::RGB_BLUE, LOW);
+    analogWrite(Pins::RGB_RED, 0);
+    analogWrite(Pins::RGB_GREEN, 0);
+    analogWrite(Pins::RGB_BLUE, 0);
 }
 
 void LEDController::linkBlueToLight(bool enable)
@@ -81,24 +81,24 @@ bool LEDController::isTempLinked()
 
 void LEDController::updateLightLink()
 {
-    int rawValue = analogRead(Pins::LDR);
+    float lightPercent = SensorManager::readLight();
 
-    if (rawValue >= 0 && rawValue <= 4095)
+    if (lightPercent != LIGHT_ERROR_VALUE)
     {
-        float factor = (float)rawValue / 4095.0;
-        int pwmValue = (int)(255 * pow(1.0 - factor, 2) * 4);
+        float factor = 1.0 - (lightPercent / 100.0);
+        int pwmValue = (int)(255 * pow(factor, 0.3));
         pwmValue = constrain(pwmValue, 0, 255);
 
         analogWrite(Pins::RGB_BLUE, pwmValue);
 
-        Serial.print("LDR raw: ");
-        Serial.print(rawValue);
-        Serial.print(" -> PWM blue: ");
+        Serial.print("Light: ");
+        Serial.print(lightPercent);
+        Serial.print("% -> PWM blue: ");
         Serial.println(pwmValue);
     }
     else
     {
-        Serial.println("Warning: Invalid LDR reading");
+        Serial.println("Warning: Invalid light reading");
     }
 }
 
@@ -108,8 +108,9 @@ void LEDController::updateTempLink()
 
     if (tempC != TEMP_ERROR_VALUE)
     {
-        float factor = constrain(tempC, TEMP_MIN, TEMP_MAX) / TEMP_MAX;
-        int pwmValue = (int)(255 * pow(factor, 2) * 3);
+        float normalizedTemp = constrain(tempC, TEMP_MIN, TEMP_MAX);
+        float factor = (normalizedTemp - TEMP_MIN) / (TEMP_MAX - TEMP_MIN);
+        int pwmValue = (int)(255 * pow(factor, 1.5) * 3);
         pwmValue = constrain(pwmValue, 0, 255);
 
         analogWrite(Pins::RGB_RED, pwmValue);
