@@ -22,9 +22,9 @@ void LEDController::setColor(uint8_t red, uint8_t green, uint8_t blue)
     lightLinked = false;
     tempLinked = false;
 
-    digitalWrite(Pins::RGB_RED, red > 0 ? HIGH : LOW);
-    digitalWrite(Pins::RGB_GREEN, green > 0 ? HIGH : LOW);
-    digitalWrite(Pins::RGB_BLUE, blue > 0 ? HIGH : LOW);
+    analogWrite(Pins::RGB_RED, red);
+    analogWrite(Pins::RGB_GREEN, green);
+    analogWrite(Pins::RGB_BLUE, blue);
 }
 
 void LEDController::setRed()
